@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codekong.litepaldemo.activity.MainActivity"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/id_user_id_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入用户id"/>
+    <EditText
+        android:id="@+id/id_user_name_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入用户名"/>
+    <EditText
+        android:id="@+id/id_user_password_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入密码"/>
+    <Button
+        android:id="@+id/id_add_user_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加用户"/>
+    <Button
+        android:id="@+id/id_delete_user_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="根据id删除用户"/>
+    <Button
+        android:id="@+id/id_modify_user_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="根据id修改用户"/>
+    <Button
+        android:id="@+id/id_select_user_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="根据id查询用户"/>
+    <TextView
+        android:id="@+id/id_select_user_res_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
