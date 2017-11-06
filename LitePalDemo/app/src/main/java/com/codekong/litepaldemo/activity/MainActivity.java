@@ -12,11 +12,18 @@ import com.codekong.litepaldemo.R;
 import com.codekong.litepaldemo.model.User;
 
 import org.litepal.crud.DataSupport;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mIdSelectUserResTv;
 
     private Unbinder mUnbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +53,17 @@ public class MainActivity extends AppCompatActivity {
         mUnbinder = ButterKnife.bind(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
+    }
+
     @OnClick({R.id.id_add_user_btn, R.id.id_delete_user_btn, R.id.id_modify_user_btn, R.id.id_select_user_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.id_add_user_btn:
+                demo1();
                 addUser();
                 break;
             case R.id.id_delete_user_btn:
@@ -59,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.id_select_user_btn:
                 selectUserById();
+                break;
+            default:
                 break;
         }
     }
@@ -107,9 +124,46 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mUnbinder.unbind();
+    /**
+     * Flowable基础代码
+     */
+    private static void demo1() {
+        Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> e) throws Exception {
+                System.out.println("发射数据1");
+                e.onNext(1);
+                System.out.println("发射数据2");
+                e.onNext(2);
+                System.out.println("发射数据3");
+                e.onNext(3);
+                System.out.println("发射数据4");
+                e.onNext(4);
+                e.onComplete();
+            }
+        }, BackpressureStrategy.BUFFER)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(Long.MAX_VALUE);
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        System.out.println("接收到数据 " + integer);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        System.out.println("接收完成");
+                    }
+                });
     }
 }
