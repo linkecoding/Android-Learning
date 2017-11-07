@@ -2,15 +2,35 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="user"
+            type="cn.codekong.databindingdemo.bean.User"/>
+        <variable
+            name="presenter"
+            type="cn.codekong.databindingdemo.activity.MainActivity.Presenter"/>
+    </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="cn.codekong.databindingdemo.MainActivity">
+        android:orientation="vertical"
+        tools:context="cn.codekong.databindingdemo.activity.MainActivity">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onTextChanged="@{presenter.onTextChanged}"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{user.password}"
+            android:onClick="@{presenter.onClick}"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!"/>
+            android:text="@{user.username}"
+            android:onClick="@{() -> presenter.onClickUserName(user)}"/>
 
     </LinearLayout>
 </layout>
